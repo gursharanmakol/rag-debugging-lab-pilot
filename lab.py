@@ -2,9 +2,12 @@ import argparse
 import datetime
 import sys
 
+from eval.checks import eligibility_report
+from src.eligibility import is_eligible
 from src.embed import load_model
 from src.load import load_corpus, load_questions
-from src.search import build_index
+from src.report import format_evaluate, format_inspect
+from src.search import build_index, eligible_results, searchable_documents
 
 ALLOWED_STATUS = ("draft", "published", "superseded", "active")
 ALLOWED_TYPE = ("policy", "help")
@@ -23,6 +26,11 @@ def main() -> None:
     search_parser = sub.add_parser("search", help="Search the corpus")
     search_parser.add_argument("query")
     search_parser.add_argument("--k", type=int, default=3)
+    evaluate_parser = sub.add_parser("evaluate", help="Score the questions")
+    evaluate_parser.add_argument("--verbose", action="store_true")
+    inspect_parser = sub.add_parser("inspect", help="Show one question")
+    inspect_parser.add_argument("qid")
+    inspect_parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
     if args.command == "check":
         raise SystemExit(run_check())
@@ -30,6 +38,10 @@ def main() -> None:
         raise SystemExit(run_corpus())
     if args.command == "search":
         raise SystemExit(run_search(args.query, args.k))
+    if args.command == "evaluate":
+        raise SystemExit(run_evaluate(args.verbose))
+    if args.command == "inspect":
+        raise SystemExit(run_inspect(args.qid, args.verbose))
     parser.print_help()
 
 
@@ -113,7 +125,7 @@ def run_check() -> int:
             print(f"[FAIL] {problem}")
         return 1
 
-    print("Ready.")
+    print("Ready. Next: python lab.py evaluate")
     return 0
 
 
@@ -129,7 +141,7 @@ def _embedding_model_ok() -> bool:
 def run_search(query: str, k: int) -> int:
     docs = load_corpus()
     index = build_index(docs)
-    hits = index.search(query, k=k)
+    hits = eligible_results(index, query, k)
     header = ("rank", "id", "score")
     rows = [header]
     for rank, (doc, score) in enumerate(hits, start=1):
@@ -141,6 +153,59 @@ def run_search(query: str, k: int) -> int:
     for row in rows:
         pieces = [cell.ljust(widths[index]) for index, cell in enumerate(row)]
         print("  ".join(pieces).rstrip())
+    return 0
+
+
+def run_evaluate(verbose: bool) -> int:
+    docs = load_corpus()
+    index = build_index(docs)
+    questions = load_questions()
+    failures = []
+    found = 0
+    for item in questions:
+        hits = eligible_results(index, item["question"], 3)
+        got = [doc.id for doc, _score in hits]
+        if item["expected"] in got:
+            found += 1
+        else:
+            failures.append(
+                {
+                    "id": item["id"],
+                    "question": item["question"],
+                    "expected": item["expected"],
+                    "got": got,
+                }
+            )
+    searchable = searchable_documents(load_corpus())
+    ok, ineligible = eligibility_report(searchable)
+    print(format_evaluate(found, ok, ineligible, failures, verbose))
+    return 0
+
+
+def run_inspect(qid: str, verbose: bool) -> int:
+    questions = load_questions()
+    match = None
+    for item in questions:
+        if str(item.get("id", "")).lower() == qid.lower():
+            match = item
+            break
+    if match is None:
+        print(f"[FAIL] Unknown question id {qid}")
+        return 1
+    index = build_index(load_corpus())
+    question = match["question"]
+    candidates = index.search(question, k=5)
+    finals = eligible_results(index, question, k=3)
+    print(
+        format_inspect(
+            question,
+            match["expected"],
+            candidates,
+            finals,
+            verbose,
+            is_eligible,
+        )
+    )
     return 0
 
 
