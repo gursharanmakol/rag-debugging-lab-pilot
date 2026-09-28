@@ -1,0 +1,31 @@
+questions:
+  - id: Q01
+    question: "How many days do I have to ask for a refund?"
+    expected: refund-policy-2026
+  - id: Q02
+    question: "My order hasn't shipped yet. Can I still cancel it?"
+    expected: cancellation-policy-2026
+  - id: Q03
+    question: "Can I return headphones I already opened?"
+    expected: returns-policy-2026
+  - id: Q04
+    question: "How long is the warranty on my headset?"
+    expected: warranty-policy-2026
+  - id: Q05
+    question: "How long does standard shipping take?"
+    expected: shipping-policy-2026
+  - id: Q06
+    question: "I forgot my password. How do I reset it?"
+    expected: account-help
+  - id: Q07
+    question: "How do I pair my headset with a new phone?"
+    expected: product-care-headsets
+  - id: Q08
+    question: "My package hasn't moved in a week. What should I do?"
+    expected: shipping-faq
+  - id: Q09
+    question: "Can I pay with PayPal?"
+    expected: payment-methods
+  - id: Q10
+    question: "What will the charge look like on my card statement?"
+    expected: billing-faq

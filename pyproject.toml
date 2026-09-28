@@ -1,0 +1,6 @@
+[project]
+name = "rag-lab-pilot"
+version = "0.1.0"
+description = "TechNova RAG debugging lab"
+requires-python = ">=3.12,<3.13"
+dependencies = ["numpy", "pyyaml"]
