@@ -2,7 +2,9 @@ import argparse
 import datetime
 import sys
 
+from src.embed import load_model
 from src.load import load_corpus, load_questions
+from src.search import build_index
 
 ALLOWED_STATUS = ("draft", "published", "superseded", "active")
 ALLOWED_TYPE = ("policy", "help")
@@ -18,11 +20,16 @@ def main() -> None:
         "corpus",
         help="Print corpus id, type, status, and effective_date",
     )
+    search_parser = sub.add_parser("search", help="Search the corpus")
+    search_parser.add_argument("query")
+    search_parser.add_argument("--k", type=int, default=3)
     args = parser.parse_args()
     if args.command == "check":
         raise SystemExit(run_check())
     if args.command == "corpus":
         raise SystemExit(run_corpus())
+    if args.command == "search":
+        raise SystemExit(run_search(args.query, args.k))
     parser.print_help()
 
 
@@ -95,6 +102,10 @@ def run_check() -> int:
                 )
         if not question_problems:
             print(f"[OK] Evaluation questions: {len(questions)}")
+            if not _embedding_model_ok():
+                print("[FAIL] Embedding model not found or failed to load offline")
+                return 1
+            print("[OK] Embedding model: potion-base-8M")
 
     problems = doc_problems + question_problems
     if problems:
@@ -103,6 +114,33 @@ def run_check() -> int:
         return 1
 
     print("Ready.")
+    return 0
+
+
+def _embedding_model_ok() -> bool:
+    try:
+        model = load_model()
+        model.encode(["ping"])
+    except Exception:
+        return False
+    return True
+
+
+def run_search(query: str, k: int) -> int:
+    docs = load_corpus()
+    index = build_index(docs)
+    hits = index.search(query, k=k)
+    header = ("rank", "id", "score")
+    rows = [header]
+    for rank, (doc, score) in enumerate(hits, start=1):
+        rows.append((str(rank), doc.id, f"{score:.3f}"))
+    widths = [0, 0, 0]
+    for row in rows:
+        for index, cell in enumerate(row):
+            widths[index] = max(widths[index], len(cell))
+    for row in rows:
+        pieces = [cell.ljust(widths[index]) for index, cell in enumerate(row)]
+        print("  ".join(pieces).rstrip())
     return 0
 
 
