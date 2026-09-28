@@ -1,6 +1,6 @@
-def format_evaluate(found, ok, ineligible, failures, verbose):
+def format_evaluate(found, total, ok, ineligible, failures, verbose):
     lines = [
-        f"Retrieval    {found}/10 questions found the expected source in the top 3",
+        f"Retrieval    {found}/{total} questions found the expected source in the top 3",
         f"Eligibility  {'PASS' if ok else 'FAIL'}  {_eligibility_phrase(len(ineligible))}",
     ]
     if verbose and not ok:

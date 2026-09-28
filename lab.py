@@ -125,7 +125,7 @@ def run_check() -> int:
             print(f"[FAIL] {problem}")
         return 1
 
-    print("Ready. Next: python lab.py evaluate")
+    print("Ready. Next: uv run python lab.py evaluate")
     return 0
 
 
@@ -178,7 +178,7 @@ def run_evaluate(verbose: bool) -> int:
             )
     searchable = searchable_documents(load_corpus())
     ok, ineligible = eligibility_report(searchable)
-    print(format_evaluate(found, ok, ineligible, failures, verbose))
+    print(format_evaluate(found, len(questions), ok, ineligible, failures, verbose))
     return 0
 
 
