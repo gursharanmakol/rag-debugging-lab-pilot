@@ -5,21 +5,21 @@ Open one hint at a time, and try it before you open the next.
 <details>
 <summary><strong>Hint 1</strong></summary>
 
-What changed around the time the problem started? Read `CHANGES.md`, then look at the history of the code with `git log -p -- src/` (press `q` to leave the log). Compare what the change was meant to exclude with what it actually excludes.
+Start with one failed question, such as Q01. Run `uv run python lab.py inspect Q01 --verbose` and follow the expected document through the search pipeline. Where does it appear, and where does it disappear?
 
 </details>
 
 <details>
 <summary><strong>Hint 2</strong></summary>
 
-Run `inspect` on a failing question. The expected document is a top candidate, but it is not in the final results. Run it again with `--verbose`, then read `corpus/METADATA.md`.
+Now look at what changed around the time the problem started. Read `CHANGES.md`, then inspect the code history with `git log -p -- src/` (press `q` to leave the log). Compare what the change was intended to do with what the code actually does.
 
 </details>
 
 <details>
 <summary><strong>Hint 3</strong></summary>
 
-Look at `is_eligible()` in `src/eligibility.py`. Does its idea of "current" match the metadata contract? Which status values should a customer be able to see?
+Look at `src/eligibility.py` and `corpus/METADATA.md`. Compare the eligibility condition in the code with the document states defined for customer-visible content. Does the condition allow every kind of document that should be visible to customers?
 
 </details>
 

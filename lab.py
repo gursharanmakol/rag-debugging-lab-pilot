@@ -168,25 +168,22 @@ def run_evaluate(verbose: bool) -> int:
     docs = load_corpus()
     index = build_index(docs)
     questions = load_questions()
-    failures = []
-    found = 0
+    results = []
     for item in questions:
         hits = eligible_results(index, item["question"], 3)
         got = [doc.id for doc, _score in hits]
-        if item["expected"] in got:
-            found += 1
-        else:
-            failures.append(
-                {
-                    "id": item["id"],
-                    "question": item["question"],
-                    "expected": item["expected"],
-                    "got": got,
-                }
-            )
+        results.append(
+            {
+                "id": item["id"],
+                "question": item["question"],
+                "expected": item["expected"],
+                "got": got,
+                "passed": item["expected"] in got,
+            }
+        )
     searchable = searchable_documents(load_corpus())
     ok, ineligible = eligibility_report(searchable)
-    print(format_evaluate(found, len(questions), ok, ineligible, failures, verbose))
+    print(format_evaluate(results, ok, ineligible, verbose))
     return 0
 
 

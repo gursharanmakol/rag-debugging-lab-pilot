@@ -22,25 +22,27 @@ def _fail_label() -> str:
     return f"{_RED}FAIL{_RESET}" if _color_enabled() else "FAIL"
 
 
-def format_evaluate(found, total, ok, ineligible, failures, verbose):
+def format_evaluate(results, ok, ineligible, verbose):
+    passed = sum(1 for item in results if item["passed"])
+    failed = len(results) - passed
+    lines = ["Retrieval evaluation"]
+    for item in results:
+        label = _pass_label() if item["passed"] else _fail_label()
+        lines.append("")
+        lines.append(f"{item['id']}  {label}  {item['question']}")
+        lines.append(f"     expected  {item['expected']}")
+        lines.append(f"     got       {', '.join(item['got'])}")
+    lines.append("")
+    lines.append("Summary")
+    lines.append(f"Retrieval    {passed} {_pass_label()} / {failed} {_fail_label()}")
     outcome = _pass_label() if ok else _fail_label()
-    lines = [
-        f"Retrieval    {found}/{total} questions found the expected source in the top 3",
-        f"Eligibility  {outcome}  {_eligibility_phrase(len(ineligible))}",
-    ]
+    lines.append(f"Eligibility  {outcome}  {_eligibility_phrase(len(ineligible))}")
     if verbose and not ok:
         lines.append("")
         lines.append("Ineligible searchable documents:")
         width = max(len(doc.id) for doc in ineligible)
         for doc in ineligible:
             lines.append(f"  {doc.id:<{width}}   status={doc.meta['status']}")
-    if failures:
-        lines.append("")
-        lines.append("Retrieval failures")
-        for item in failures:
-            lines.append(f"  {item['id']}  {item['question']}")
-            lines.append(f"       expected  {item['expected']}")
-            lines.append(f"       got       {', '.join(item['got'])}")
     return "\n".join(lines)
 
 
