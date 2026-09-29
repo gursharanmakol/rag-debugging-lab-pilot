@@ -27,23 +27,20 @@ def format_inspect(question, expected, candidates, finals, verbose, eligible):
         "Top candidates by similarity",
     ]
     id_width = max((len(doc.id) for doc, _score in candidates), default=0)
-    status_width = max(
-        (len(str(doc.meta["status"])) for doc, _score in candidates),
-        default=0,
-    )
-    for rank, (doc, score) in enumerate(candidates, start=1):
-        status = str(doc.meta["status"])
-        line = (
-            f"  {rank}  {doc.id:<{id_width}}  {score:.3f}  "
-            f"status={status:<{status_width}}"
-        )
-        if verbose:
-            line += "   " + ("kept" if eligible(doc) else "removed")
-        lines.append(line.rstrip())
+    if verbose:
+        lines.append(f"rank  {'id':<{id_width}}  score  after eligibility")
+        for rank, (doc, score) in enumerate(candidates, start=1):
+            decision = "kept" if eligible(doc) else "removed"
+            lines.append(
+                f"{rank:<4}  {doc.id:<{id_width}}  {score:<5.3f}  {decision}"
+            )
+    else:
+        for rank, (doc, score) in enumerate(candidates, start=1):
+            lines.append(f"  {rank}  {doc.id:<{id_width}}  {score:.3f}")
     lines.append("")
-    lines.append("Final results (top 3)")
-    for doc, _score in finals:
-        lines.append(f"  {doc.id}")
+    lines.append("Final results (top 3 after eligibility)")
+    for rank, (doc, _score) in enumerate(finals, start=1):
+        lines.append(f"{rank}  {doc.id}")
     return "\n".join(lines)
 
 
