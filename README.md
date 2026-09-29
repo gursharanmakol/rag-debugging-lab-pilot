@@ -93,7 +93,7 @@ Similarity answers one question, which documents are related to what the custome
 <summary><strong>What the commands show</strong></summary>
 
 - `check` confirms that Python, the documents, the evaluation questions, and the embedding model are all ready. Run it first.
-- `evaluate` runs every evaluation question through the customer search and reports both checks. It lists any question whose expected document did not come back. `--verbose` adds detail when the eligibility check fails.
+- `evaluate` runs every evaluation question through the customer search and reports both checks. It lists every question as PASS or FAIL, with the documents that came back. `--verbose` adds detail when the eligibility check fails.
 - `inspect Q01` looks at one question in detail. It shows the documents ranked by similarity and, separately, the final results a customer would receive. `--verbose` adds the eligibility decision for each ranked document.
 - `corpus` lists every document with a few of its metadata fields.
 - `search "your question"` runs any question you type through the customer search.

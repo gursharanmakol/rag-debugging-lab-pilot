@@ -35,25 +35,29 @@ The same pattern works on other failures. Only the stage changes. If the documen
 
 ## What failed, and which output showed it
 
-`evaluate` reported Retrieval 5/10. All five failures were policy questions (Q01 to Q05). The five help-page questions passed.
+`evaluate` reported 5 PASS and 5 FAIL. All five failures were policy questions (Q01 to Q05). The five help-page questions passed.
 
-`inspect Q01` showed where the document went.
+`inspect Q01 --verbose` showed where the document went.
 
 ```
+Question   How many days do I have to ask for a refund?
+Expected   refund-policy-2026
+
 Top candidates by similarity
-  1  refund-policy-2026   0.747  status=published
-  2  refund-policy-2025   0.718  status=superseded
-  3  returns-policy-2026  0.593  status=published
-  4  billing-faq          0.581  status=active
-  5  returns-policy-2025  0.486  status=superseded
+rank  id                   score  after eligibility
+1     refund-policy-2026   0.747  removed
+2     refund-policy-2025   0.718  removed
+3     returns-policy-2026  0.593  removed
+4     billing-faq          0.581  kept
+5     returns-policy-2025  0.486  removed
 
-Final results (top 3)
-  billing-faq
-  account-help
-  payment-methods
+Final results (top 3 after eligibility)
+1  billing-faq
+2  account-help
+3  payment-methods
 ```
 
-The right document was the closest match of all fifteen. Search found it. Something between ranking and the final results removed it. `inspect Q01 --verbose` marked both `published` documents as `removed` and the `active` help page as `kept`.
+The right document was the closest match of all fifteen. Search found it, and the eligibility step removed it, along with the other 2026 policy near the top. The help page `billing-faq` was kept. The `corpus` command, or the files themselves, show the difference. Both removed 2026 policies are `published`, and the kept help page is `active`.
 
 ## The wrong assumption
 
@@ -78,7 +82,8 @@ Any version that lets `published` and `active` through and rejects everything el
 After the fix, `evaluate` reports this.
 
 ```
-Retrieval    10/10 questions found the expected source in the top 3
+Summary
+Retrieval    10 PASS / 0 FAIL
 Eligibility  PASS  0 ineligible documents are searchable
 ```
 
