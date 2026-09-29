@@ -1,7 +1,32 @@
+import os
+import sys
+
+_RESET = "\033[0m"
+_GREEN = "\033[32m"
+_RED = "\033[31m"
+
+
+def _color_enabled() -> bool:
+    if os.environ.get("NO_COLOR"):
+        return False
+    if os.environ.get("TERM") == "dumb":
+        return False
+    return hasattr(sys.stdout, "isatty") and sys.stdout.isatty()
+
+
+def _pass_label() -> str:
+    return f"{_GREEN}PASS{_RESET}" if _color_enabled() else "PASS"
+
+
+def _fail_label() -> str:
+    return f"{_RED}FAIL{_RESET}" if _color_enabled() else "FAIL"
+
+
 def format_evaluate(found, total, ok, ineligible, failures, verbose):
+    outcome = _pass_label() if ok else _fail_label()
     lines = [
         f"Retrieval    {found}/{total} questions found the expected source in the top 3",
-        f"Eligibility  {'PASS' if ok else 'FAIL'}  {_eligibility_phrase(len(ineligible))}",
+        f"Eligibility  {outcome}  {_eligibility_phrase(len(ineligible))}",
     ]
     if verbose and not ok:
         lines.append("")
