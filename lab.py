@@ -33,15 +33,23 @@ def main() -> None:
     inspect_parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
     if args.command == "check":
-        raise SystemExit(run_check())
+        code = run_check()
+        print()
+        raise SystemExit(code)
     if args.command == "corpus":
         raise SystemExit(run_corpus())
     if args.command == "search":
-        raise SystemExit(run_search(args.query, args.k))
+        code = run_search(args.query, args.k)
+        print()
+        raise SystemExit(code)
     if args.command == "evaluate":
-        raise SystemExit(run_evaluate(args.verbose))
+        code = run_evaluate(args.verbose)
+        print()
+        raise SystemExit(code)
     if args.command == "inspect":
-        raise SystemExit(run_inspect(args.qid, args.verbose))
+        code = run_inspect(args.qid, args.verbose)
+        print()
+        raise SystemExit(code)
     parser.print_help()
 
 
