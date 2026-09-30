@@ -102,7 +102,18 @@ Similarity answers one question, which documents are related to what the custome
 
 ## Setup
 
-Everything in this lab runs from a terminal. On Windows, PowerShell is fine. On macOS, use Terminal. You do not need an IDE or a debugger.
+### What you'll need
+
+- **Git** to clone the lab repository.
+- **uv** to run the lab. It installs the required Python version for you.
+- **A terminal** to run the lab commands. On Windows, PowerShell is fine. On macOS, use Terminal. You can also use the terminal built into VS Code or another editor.
+- **Any code editor** you like to read and change the code.
+
+### How you'll work
+
+Run the lab commands in the terminal to reproduce the problem and investigate what is happening. Open the project in your code editor, make the code change you think is needed, then run the commands again to verify your fix.
+
+You won't need a debugger.
 
 ### 1. Check your setup
 
