@@ -102,17 +102,58 @@ Similarity answers one question, which documents are related to what the custome
 
 ## Setup
 
-You need Git and uv. uv installs the right Python version (3.12) the first time you run the lab.
+Everything in this lab runs from a terminal. On Windows, PowerShell is fine. On macOS, use Terminal. You do not need an IDE or a debugger.
 
-1. Install uv by following https://docs.astral.sh/uv/getting-started/installation/
-2. Clone the repository you were given access to, and open a terminal in its folder.
-3. Run the setup check.
+### 1. Check your setup
 
+```bash
+git --version
+uv --version
 ```
+
+If both commands print a version, continue to step 2. If either command is not found, open the install steps below. You do not need to install Python yourself. uv installs Python 3.12 the first time you run the lab.
+
+<details>
+<summary>Need to install Git or uv?</summary>
+
+Git: https://git-scm.com/downloads
+
+uv for Windows PowerShell:
+
+```bash
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+uv for macOS or Linux:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Close and reopen your terminal after installing uv. Then run the version checks again.
+
+</details>
+
+### 2. Get the lab and check it
+
+```bash
+git clone https://github.com/gursharanmakol/rag-debugging-lab-pilot.git
+cd rag-debugging-lab-pilot
 uv run python lab.py check
 ```
 
-The first run takes a minute while uv sets up the environment. You're ready when the last line starts with `Ready.`
+The first run may take a few minutes while uv prepares Python and the dependencies. You're ready when the last line starts with `Ready.`
+
+If `check` still does not pass after about 15 minutes, stop trying to fix setup. Copy the full terminal output and paste it into the study form. That still counts as a completed session.
+
+### 3. Evaluate, then inspect
+
+```bash
+uv run python lab.py evaluate
+uv run python lab.py inspect Q01
+```
+
+`evaluate` shows which evaluation questions fail. `inspect` shows what happened for one question. The full command list is in the next section.
 
 ## Commands
 
