@@ -15,14 +15,15 @@ Where does it appear, and where does it stop appearing?
 <summary><strong>Hint 2</strong></summary>
 
 `inspect --verbose` shows what happened to each document at each step.
-If you want more context, `CHANGES.md` and the git history show what changed recently.
+If you want more context, `CHANGES.md` and `git log -p -- src/`
+(press `q` to exit) show what changed recently.
 
 </details>
 
 <details>
 <summary><strong>Hint 3</strong></summary>
 
-Look at `src/eligibility.py` and `corpus/METADATA.md`. Compare the eligibility condition in the code with the document states defined for customer-visible content. Does the condition allow every kind of document that should be visible to customers?
+Look at `src/eligibility.py` and `corpus/METADATA.md`. Compare the eligibility condition in the code with the document states defined for customer-visible content. Does the condition allow every kind of document that should be visible to customers, and only those?
 
 </details>
 

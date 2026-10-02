@@ -31,7 +31,7 @@ If you'd like to understand how the search works before you start, open the back
 
 > **TechNova support search: policy questions stopped working**
 >
-> TechNova's support assistant searches help-center documents before answering customers. Yesterday the team shipped a change so customer searches use only current policies, not old versions (see `CHANGES.md`).
+> TechNova's support assistant searches help-center documents before answering customers. Yesterday the team shipped a change so customer searches use only current policies, not old versions.
 >
 > This morning, support reported that several policy questions no longer find the right document.
 >
