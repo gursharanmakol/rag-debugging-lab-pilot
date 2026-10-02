@@ -18,14 +18,14 @@ If you'd like to understand how the search works before you start, open the back
 
 ## Where things are
 
-- `lab.py` — commands used to run and inspect the lab
-- `src/` — application code
-- `corpus/` — documents used by the search system
-- `eval/questions.yaml` — evaluation questions
-- `corpus/METADATA.md` — describes the document fields
-- `CHANGES.md` — records recent project changes
-- `HINTS.md` — progressive hints if you get stuck
-- `solution/SOLUTION.md` — solution and explanation to use after attempting the exercise
+- `lab.py`: commands used to run and inspect the lab
+- `src/`: application code
+- `corpus/`: documents used by the search system
+- `eval/questions.yaml`: evaluation questions
+- `corpus/METADATA.md`: describes the document fields
+- `CHANGES.md`: records recent project changes
+- `HINTS.md`: progressive hints if you get stuck
+- `solution/SOLUTION.md`: solution and explanation to use after attempting the exercise
 
 ## Your ticket
 
@@ -140,7 +140,7 @@ You won't need a debugger.
 
 You may use AI for incidental technical help: environment or setup issues, terminal or path problems, Python syntax, understanding an error message, or editor and tool usage.
 
-Please do not use AI to do the core diagnosis for you. Prompts like "Find the bug in this RAG system," "What line should I change?," "What is the correct eligibility condition?," or "Why is this evaluation failing?" remove the reasoning this lab is meant to practice.
+Please do not use AI to do the core diagnosis for you. Prompts like "Find the bug in this RAG system," "What line should I change?," "What is the correct fix?," or "Why is this evaluation failing?" remove the reasoning this lab is meant to practice.
 
 ### 1. Check your setup
 
@@ -255,5 +255,5 @@ Compare your answers with "Check your reasoning" in `solution/SOLUTION.md`.
 For deeper RAG background after the lab, the AI in Practice Hub RAG series is optional follow-up reading. Parts 2–4 are a useful next step:
 
 - [Part 2: What RAG Is and Why It Works](https://aiinpracticehub.com/articles/what-rag-is-and-why-it-works/)
-- [Part 3: How RAG Works — The Complete Pipeline](https://aiinpracticehub.com/articles/how-rag-works-the-complete-pipeline/)
+- [Part 3: How RAG Works: The Complete Pipeline](https://aiinpracticehub.com/articles/how-rag-works-the-complete-pipeline/)
 - [Part 4: Chunking, Retrieval, and the Decisions That Break RAG](https://aiinpracticehub.com/articles/chunking-retrieval-and-the-decisions-that-break-rag/)
