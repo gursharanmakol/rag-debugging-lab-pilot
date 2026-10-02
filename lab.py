@@ -1,5 +1,6 @@
 import argparse
 import datetime
+import importlib.metadata
 import sys
 
 from eval.checks import eligibility_report
@@ -13,6 +14,12 @@ ALLOWED_STATUS = ("draft", "published", "superseded", "active")
 ALLOWED_TYPE = ("policy", "help")
 REQUIRED_DOC_FIELDS = ("id", "title", "type", "status", "updated")
 REQUIRED_QUESTION_FIELDS = ("id", "question", "expected")
+# Versions from uv.lock / requirements.txt (tested environment).
+EXPECTED_PACKAGE_VERSIONS = {
+    "model2vec": "0.9.0",
+    "numpy": "2.5.3",
+    "pyyaml": "6.0.3",
+}
 
 
 def main() -> None:
@@ -62,6 +69,9 @@ def run_check() -> int:
         print(f"[FAIL] Python 3.12 required, found {version}")
         return 1
     print(f"[OK] Python {version}")
+
+    if not _check_package_versions():
+        return 1
 
     doc_problems = []
     docs = None
@@ -135,6 +145,30 @@ def run_check() -> int:
 
     print("Ready. Next: uv run python lab.py evaluate")
     return 0
+
+
+def _check_package_versions() -> bool:
+    mismatched = False
+    for name, expected in EXPECTED_PACKAGE_VERSIONS.items():
+        try:
+            found = importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError:
+            print(f"[FAIL] Package {name} is not installed (expected {expected})")
+            return False
+        if found != expected:
+            print(
+                f"[WARN] {name} {found} (tested with {expected}); "
+                "exact retrieval scores may differ from documented values"
+            )
+            mismatched = True
+        else:
+            print(f"[OK] {name} {found}")
+    if mismatched:
+        print(
+            "[WARN] Dependency versions differ from the tested lockfile. "
+            "Exact retrieval scores may differ from documented values."
+        )
+    return True
 
 
 def _embedding_model_ok() -> bool:

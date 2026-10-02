@@ -5,14 +5,17 @@ Open one hint at a time, and try it before you open the next.
 <details>
 <summary><strong>Hint 1</strong></summary>
 
-Start with one failed question, such as Q01. Run `uv run python lab.py inspect Q01 --verbose` and follow the expected document through the search pipeline. Where does it appear, and where does it disappear?
+Pick one failing question and run `inspect` on it.
+Find the document you expected.
+Where does it appear, and where does it stop appearing?
 
 </details>
 
 <details>
 <summary><strong>Hint 2</strong></summary>
 
-Now look at what changed around the time the problem started. Read `CHANGES.md`, then inspect the code history with `git log -p -- src/` (press `q` to leave the log). Compare what the change was intended to do with what the code actually does.
+`inspect --verbose` shows what happened to each document at each step.
+If you want more context, `CHANGES.md` and the git history show what changed recently.
 
 </details>
 

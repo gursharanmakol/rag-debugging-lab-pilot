@@ -22,14 +22,15 @@ In this lab, the expected document for Q01 moved through the stages like this.
 Expected document: refund-policy-2026
        |
        v
-Similarity ranking    FOUND    (rank 1 of 15)
+Similarity ranking    PRESENT AS CANDIDATE    (rank 1 of 15)
        |
        v
 Eligibility           REMOVED
        |
        v
-Final results         MISSING
+Final results         ABSENT FROM FINAL RESULTS
 ```
+
 
 The same pattern works on other failures. Only the stage changes. If the document had been missing from the similarity ranking, you would investigate the embeddings or the document text. If it had reached the final results and the answer was still wrong, you would look further downstream.
 
